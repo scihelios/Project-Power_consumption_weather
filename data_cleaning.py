@@ -9,6 +9,7 @@ dict_of_values = {}
 for csv_file in csv_files:
     file_path = os.path.join(folder_path, csv_file)
 
+
     data = pd.read_csv(file_path, sep=';')
     data = data[data['numer_sta'] == 7149]
 
