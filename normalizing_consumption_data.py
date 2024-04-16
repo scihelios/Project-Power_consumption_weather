@@ -16,14 +16,18 @@ new_dict_of_values = dict_of_values
 for i , time in enumerate(time_stamps):
     for j , value in enumerate(dict_of_values[time][1] ): 
 
-        if value =="":
+        if value == "" or value=="?":
             try:
                 new_dict_of_values[time][1][j] = (float(new_dict_of_values[time_stamps[i-1]][1][j])+float(new_dict_of_values[time_stamps[i+1]][1][j]))/2
                 #je prend juste la moyenne des valeur du même indice dans les time stamp d'avant et aprés
                 pass
             except Exception as e:
-
-                print("An error occurred:", new_dict_of_values[time_stamps[i-1]][1][j] , new_dict_of_values[time_stamps[i+1]][1][j] , time , j)
+                try :
+                    print("An error occurred:", new_dict_of_values[time_stamps[i-1]][1][j] , new_dict_of_values[time_stamps[i+1]][1][j] , time , j)
+                    del new_dict_of_values[time]
+                    
+                except:
+                    pass
         else:
             try:
                 new_dict_of_values[time][1][j] = float(value)
@@ -34,6 +38,10 @@ for i , time in enumerate(time_stamps):
 
 time_stamps =  [i for i in new_dict_of_values]
 time_stamps.sort()
+print(new_dict_of_values)
+
+with open('testing.json', 'w') as json_file:
+    json.dump(new_dict_of_values, json_file, indent=4)
 
 values_for_histogramme =[[] for i in range(7)] #car 7 variable en total
 for i , time in enumerate(time_stamps):
@@ -48,7 +56,7 @@ mean_values_vector = [np.mean(np.array([j for j in i if j!=0])) for i in values_
 #now for the 0-1 normalization (cause it is much easier)
 for i , time in enumerate(time_stamps):
     for j , value in enumerate(new_dict_of_values[time][1] ): 
-        new_dict_of_values[time][1][j] = value/mean_values_vector[j]
+        new_dict_of_values[time][1][j] = value-mean_values_vector[j]
 
 
 values_for_histogramme =[[] for i in range(7)] #car 7 variable en total

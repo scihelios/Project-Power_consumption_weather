@@ -3,6 +3,7 @@ import os
 import json
 import random
 import matplotlib.pyplot as plt
+import numpy as np
 
 with open('cleaned_and_filled_data.json', 'r') as json_file:
     dict_of_values = json.load(json_file)
@@ -51,13 +52,19 @@ for i , time in enumerate(time_stamps):
         values_for_histogramme[j].append(value)
 
 
-max_values_vector = [max(i) for i in values_for_histogramme]
-min_values_vector = [min(i) for i in values_for_histogramme]
+mean_values_vector = [np.mean(np.array([j for j in i if j!=0])) for i in values_for_histogramme]
+variance =[np.std(np.array([j for j in i if j!=0])) for i in values_for_histogramme]
+
 
 #now for the 0-1 normalization (cause it is much easier)
 for i , time in enumerate(time_stamps):
     for j , value in enumerate(new_dict_of_values[time] ): 
-        new_dict_of_values[time][j] = (value-min_values_vector[j])/(max_values_vector[j]-min_values_vector[j])
+        new_dict_of_values[time][j] = (value-mean_values_vector[j])/variance[j]
+
+values_for_histogramme =[[] for i in range(8)] #car 8 variable en total
+for i , time in enumerate(time_stamps):
+    for j , value in enumerate(new_dict_of_values[time] ): 
+        values_for_histogramme[j].append(value)
 
 
 
@@ -69,11 +76,11 @@ fig, axes = plt.subplots(nrows=2, ncols=4, figsize=(10, 20))
 axes = axes.flatten()
 
 for i, ax in enumerate(axes):
-    ax.hist(values_for_histogramme[i], bins='auto', alpha=0.75)
-    ax.set_title(variable_names[i])
-    ax.set_ylabel('Frequency')
+    if i <8 :
+        ax.hist(values_for_histogramme[i], bins=10, alpha=0.75)
+        ax.set_title(variable_names[i])
+        ax.set_ylabel('Frequency')
 plt.show()
 
-
-with open('cleaned_and_filled_data_normalized.json', 'w') as json_file:
+with open('cleaned_and_filled_data_normalized_2.json', 'w') as json_file:
     json.dump(new_dict_of_values, json_file, indent=4)

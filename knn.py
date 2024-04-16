@@ -2,9 +2,10 @@ import json
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
 
 # Load the JSON data
-with open('matched_data_normalized.json', 'r') as file:
+with open('cleaned_and_filled_data_normalized_2.json', 'r') as file:
     dict_for_values = json.load(file)
 
 
@@ -18,21 +19,32 @@ for time_stamp in dict_for_values:
 
 
 for time_stamp in [i for i in daily_vectors]:
-    if len(daily_vectors[time_stamp]) != 7 * 8 :
+    if len(daily_vectors[time_stamp]) != 8 * 8 :
         del daily_vectors[time_stamp]
 
 
 
-with open('cleaned_and_filled_daily_vector.json', 'w') as json_file:
+with open('cleaned_and_filled_daily_vector_2.json', 'w') as json_file:
     json.dump(daily_vectors, json_file, indent=4)
 
-'''
+dates = list(daily_vectors.keys())
+print(len(dates))
+data_values = list(daily_vectors.values())
 
-# Cluster the dict_for_values
-n_clusters = 4  # Example: 4 clusters. Adjust based on your analysis.
-kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(normalized_data)
+# Perform K-means clustering
+n_clusters = 3  # Example: 4 clusters. Adjust this based on your requirements.
+kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(data_values)
+labels = kmeans.labels_
 
-# Print the cluster labels for each day
-cluster_labels = kmeans.labels_
-for i, date in enumerate(daily_vectors.keys()):
-    print(f"Date: {date}, Cluster: {cluster_labels[i]}")'''
+# Create a plot
+plt.figure(figsize=(12, 8))  # Adjust size to your needs
+plt.scatter(dates, labels, color='blue', s=5)  # Scatter plot of dates vs clusters
+
+
+plt.ylabel('Cluster')
+plt.title('Cluster Assignment by Date')
+
+
+# Show the plot
+plt.tight_layout()  # Adjust layout to make room for label rotation
+plt.show()
