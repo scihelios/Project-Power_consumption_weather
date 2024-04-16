@@ -1,6 +1,6 @@
 
 import json
-with open('cleaned_data.json', 'r') as json_file:
+with open('cleaned_and_filled_data_normalized.json', 'r') as json_file:
     dict_of_values = json.load(json_file)
 
 for j in ['07','08','09','10']:
