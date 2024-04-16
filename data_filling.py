@@ -4,7 +4,7 @@ import json
 import random
 import matplotlib.pyplot as plt
 
-with open('cleaned_data.json', 'r') as json_file:
+with open('cleaned_and_filled_data.json', 'r') as json_file:
     dict_of_values = json.load(json_file)
 
 
@@ -12,6 +12,7 @@ time_stamps =  [i for i in dict_of_values]
 time_stamps.sort()
 for i , time in enumerate(time_stamps):
     for j , value in enumerate(dict_of_values[time] ): 
+
         if value =="mq":
             if j == 2 :
                 dict_of_values[time][j] = float(random.choice([dict_of_values[time_stamps[i-1]][j],dict_of_values[time_stamps[i+1]][j]]))
@@ -27,8 +28,11 @@ for i , time in enumerate(time_stamps):
    
                     print("An error occurred:", dict_of_values[time_stamps[i-1]][j] , dict_of_values[time_stamps[i+1]][j] , time , j)
         else:
-            dict_of_values[time][j] = float(dict_of_values[time][j])
-
+            dict_of_values[time][j] = float(value)
+        
+        if j == 1:
+            if value <= -500 or value >= 500 :
+                del dict_of_values[time]
 
 values_for_histogramme =[[] for i in range(8)] #car 8 variable en total
 for i , time in enumerate(time_stamps):
@@ -36,8 +40,18 @@ for i , time in enumerate(time_stamps):
         values_for_histogramme[j].append(value)
 
 
-variable_names = ["Pression au niveau mer (Pa)","Variation de pression en 3 heures (Pa)","Type de tendance barométrique (code)","Direction du vent moyen 10 mn (degré)",
-                    "Vitesse du vent moyen 10 mn (m/s)", "Température (K)", "Point de rosée (K)","Humidité (%)"]
+max_values_vector = [max(i) for i in values_for_histogramme]
+min_values_vector = [min(i) for i in values_for_histogramme]
+
+#now for the 0-1 normalization (cause it is much easier)
+for i , time in enumerate(time_stamps):
+    for j , value in enumerate(dict_of_values[time] ): 
+        dict_of_values[time][j] = (value-min_values_vector[j])/max_values_vector[j]-min_values_vector[j]
+
+
+
+variable_names = ["Pression au niveau mer","Variation de pression en 3 h","Type de tendance ba","Direction du vent(degré)",
+                    "Vitesse du vent (m/s)", "Température (K)", "Point de rosée (K)","Humidité (%)"]
 
 
 fig, axes = plt.subplots(nrows=2, ncols=4, figsize=(10, 20))

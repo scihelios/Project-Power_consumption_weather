@@ -21,8 +21,7 @@ for time_stamp in daily_vectors:
     if len(daily_vectors[time_stamp]) != 7 * 8 :
         del daily_vectors[time_stamp]
 
-scaler = StandardScaler()
-normalized_data = scaler.fit_transform(mean_daily_vectors)
+
 
 # Cluster the dict_for_values
 n_clusters = 4  # Example: 4 clusters. Adjust based on your analysis.
