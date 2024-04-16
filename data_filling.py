@@ -14,7 +14,7 @@ for i , time in enumerate(time_stamps):
     for j , value in enumerate(dict_of_values[time] ): 
         if value =="mq":
             if j == 2 :
-                dict_of_values[time][j] = random.choice([dict_of_values[time_stamps[i-1]][j],dict_of_values[time_stamps[i+1]][j]])
+                dict_of_values[time][j] = float(random.choice([dict_of_values[time_stamps[i-1]][j],dict_of_values[time_stamps[i+1]][j]]))
                 # pas de valeur bizarre comme 5.5 car il faut un int stricte car c'est un code de type de condition 
                 # donc je vais choisir randomly entre les deux valeurs que j'ai avant et aprés le time stamp
                       
@@ -50,5 +50,5 @@ for i, ax in enumerate(axes):
 plt.show()
 
 
-with open('cleaned_and_filled_data.json', 'w') as json_file:
+with open('cleaned_and_filled_data_g.json', 'w') as json_file:
     json.dump(dict_of_values, json_file, indent=4)
