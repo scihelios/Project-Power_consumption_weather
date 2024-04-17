@@ -28,9 +28,9 @@ for i , time in enumerate(time_stamps):
 
 
 
-mean_values_vector = [np.mean(np.array([j for j in i if j!=0])) for i in values_for_histogramme]
+mean_values_vector = [np.mean(np.array(i)) for i in values_for_histogramme]
 
-variance_values_vector = [np.std(np.array([j for j in i if j!=0])) for i in values_for_histogramme]
+variance_values_vector = [np.std(np.array(i)) for i in values_for_histogramme]
 
 
 #now for the 0-1 normalization (cause it is much easier)
