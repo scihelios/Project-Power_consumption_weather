@@ -1,8 +1,9 @@
 import json
 import numpy as np
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from datetime import datetime
+from sklearn.cluster import KMeans
 
 # Load the JSON data
 with open('cleaned_and_filled_data_normalized_2.json', 'r') as file:
@@ -24,15 +25,15 @@ for time_stamp in [i for i in daily_vectors]:
 
 
 
-with open('cleaned_and_filled_daily_vector_2.json', 'w') as json_file:
+with open('cleaned_and_filled_daily_vector.json', 'w') as json_file:
     json.dump(daily_vectors, json_file, indent=4)
 
 dates = list(daily_vectors.keys())
 print(len(dates))
 data_values = list(daily_vectors.values())
-
+dates = [datetime.strptime(date, "%Y%m%d") for date in dates]
 # Perform K-means clustering
-n_clusters = 3  # Example: 4 clusters. Adjust this based on your requirements.
+n_clusters = 2  # Example: 4 clusters. Adjust this based on your requirements.
 kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(data_values)
 labels = kmeans.labels_
 
@@ -40,7 +41,11 @@ labels = kmeans.labels_
 plt.figure(figsize=(12, 8))  # Adjust size to your needs
 plt.scatter(dates, labels, color='blue', s=5)  # Scatter plot of dates vs clusters
 
+ax = plt.gca()  # Get the current Axes instance on the current figure
+ax.xaxis.set_major_locator(mdates.MonthLocator())  # Set major locator to each month
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))  # Format date
 
+plt.xticks(rotation=45)  # Rotate date labels for better readability
 plt.ylabel('Cluster')
 plt.title('Cluster Assignment by Date')
 
