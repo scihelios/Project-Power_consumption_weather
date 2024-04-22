@@ -37,9 +37,11 @@ n_clusters = 2  # Example: 4 clusters. Adjust this based on your requirements.
 kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(data_values)
 labels = kmeans.labels_
 
-# Create a plot
-plt.figure(figsize=(12, 8))  # Adjust size to your needs
-plt.scatter(dates, labels, color='blue', s=5)  # Scatter plot of dates vs clusters
+
+plt.figure(figsize=(12, 4))
+colors = ['red', 'blue']
+for date, label in zip(dates, labels):
+    plt.vlines(date, ymin=0, ymax=1, colors=colors[label], linewidth=3)
 
 ax = plt.gca()  # Get the current Axes instance on the current figure
 ax.xaxis.set_major_locator(mdates.MonthLocator())  # Set major locator to each month
@@ -47,9 +49,7 @@ ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))  # Format date
 
 plt.xticks(rotation=45)  # Rotate date labels for better readability
 plt.ylabel('Cluster')
-plt.title('Cluster Assignment by Date')
+plt.title('Reclustered Data (After Excluding Smallest Cluster)')
 
-
-# Show the plot
 plt.tight_layout()  # Adjust layout to make room for label rotation
 plt.show()

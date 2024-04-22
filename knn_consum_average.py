@@ -24,9 +24,6 @@ for time_stamp in [i for i in daily_vectors]:
         del daily_vectors[time_stamp]
 
 
-
-
-
 dates = list(daily_vectors.keys())
 print(len(dates))
 data_values = list(daily_vectors.values())
@@ -40,7 +37,7 @@ labels = kmeans.labels_
 plt.figure(figsize=(12, 4))
 colors = ['blue', 'red']
 for date, label in zip(dates, labels):
-    plt.vlines(date, ymin=0, ymax=1, colors=colors[label], linewidth=1)
+    plt.vlines(date, ymin=0, ymax=1, colors=colors[label], linewidth=3)
 
 ax = plt.gca()  # Get the current Axes instance on the current figure
 ax.xaxis.set_major_locator(mdates.MonthLocator())  # Set major locator to each month
