@@ -20,7 +20,7 @@ for time_stamp in dict_for_values:
 
 for time_stamp in [i for i in daily_vectors]:
     daily_vectors[time_stamp] = sum([ np.array(j) for j in daily_vectors[time_stamp]])
-    if len(daily_vectors[time_stamp]) !=  7 :
+    if len(daily_vectors[time_stamp]) !=  7  :
         del daily_vectors[time_stamp]
 
 
@@ -35,7 +35,7 @@ labels = kmeans.labels_
 
 
 plt.figure(figsize=(12, 4))
-colors = ['blue', 'red']
+colors = [ 'red','blue']
 for date, label in zip(dates, labels):
     plt.vlines(date, ymin=0, ymax=1, colors=colors[label], linewidth=3)
 
