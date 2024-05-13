@@ -1,6 +1,6 @@
 
 import json
-with open('cleaned_and_filled_data_normalized_2.json', 'r') as json_file:
+with open('cleaned_and_filled_data.json', 'r') as json_file:
     dict_of_values = json.load(json_file)
 
 for j in ['07','08','09','10']:
@@ -37,5 +37,5 @@ for i in dict_of_values:
         new_dict[i] = dict_of_values[i]
 #to take out excess data in the weather side so i only take those that have two elments i e the two lists
 
-with open('matched_data.json', 'w') as json_file:
+with open('matched_data_non_normalized.json', 'w') as json_file:
     json.dump(new_dict, json_file, indent=4)

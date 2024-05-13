@@ -72,7 +72,7 @@ variable_names = ["Pression au niveau mer","Variation de pression en 3 h","Type 
                     "Vitesse du vent (m/s)", "Température (K)", "Point de rosée (K)","Humidité (%)"]
 
 
-fig, axes = plt.subplots(nrows=2, ncols=4, figsize=(10, 20))
+fig, axes = plt.subplots(nrows=2, ncols=4, figsize=(12, 6))
 axes = axes.flatten()
 
 for i, ax in enumerate(axes):
@@ -80,6 +80,8 @@ for i, ax in enumerate(axes):
         ax.hist(values_for_histogramme[i], bins=10, alpha=0.75)
         ax.set_title(variable_names[i])
         ax.set_ylabel('Frequency')
+        
+plt.tight_layout()
 plt.show()
 
 with open('cleaned_and_filled_data_normalized_2.json', 'w') as json_file:

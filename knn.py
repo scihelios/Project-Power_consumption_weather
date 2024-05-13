@@ -33,23 +33,23 @@ print(len(dates))
 data_values = list(daily_vectors.values())
 dates = [datetime.strptime(date, "%Y%m%d") for date in dates]
 # Perform K-means clustering
-n_clusters = 2  # Example: 4 clusters. Adjust this based on your requirements.
+n_clusters = 2  
 kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(data_values)
 labels = kmeans.labels_
 
 
 plt.figure(figsize=(12, 4))
-colors = ['red', 'blue']
+colors = ['blue', 'red']
 for date, label in zip(dates, labels):
     plt.vlines(date, ymin=0, ymax=1, colors=colors[label], linewidth=3)
 
-ax = plt.gca()  # Get the current Axes instance on the current figure
-ax.xaxis.set_major_locator(mdates.MonthLocator())  # Set major locator to each month
-ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))  # Format date
+ax = plt.gca()  
+ax.xaxis.set_major_locator(mdates.MonthLocator()) 
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))  
 
-plt.xticks(rotation=45)  # Rotate date labels for better readability
+plt.xticks(rotation=45) 
 plt.ylabel('Cluster')
 plt.title('Reclustered Data (After Excluding Smallest Cluster)')
 
-plt.tight_layout()  # Adjust layout to make room for label rotation
+plt.tight_layout() 
 plt.show()
